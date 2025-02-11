@@ -15,6 +15,6 @@ Steps to install:
   11. source ~/.bashrc
   12. luarocks --lua-version=5.1 install magick
 13. If you have ~/.config/nvim then back it up and delete it. If you don't have it, proceed
-14. Install this config: git clone https://github.com/mg104/minimal-jupynium-and-molten-nvim-config.git
+14. Install this config: git clone https://github.com/mg104/minimal-molten-nvim-config.git
 15. Move this config to your nvim config folder: mv minimal-jupynium-and-molten-nvim-config.git ~/.config/nvim
 16. Run: nvim (things will get set up automatically)
