@@ -72,7 +72,7 @@ vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 vim.keymap.set(
 	"n",
 	"<localleader>mi",
-	":MoltenInit<CR>",
+	":MoltenInit<CR>", -- Initializes the pip/conda environment whose jupyter kernel you want to use
 	{
 		silent = true, 
 		desc = "Initialize the plugin" 
@@ -112,7 +112,10 @@ vim.keymap.set(
 vim.keymap.set(
 	"v",
 	"<localleader>r",
-	":<C-u>MoltenEvaluateVisual<CR>",
+	":<C-u>MoltenEvaluateVisual<CR>",-- Run the code contained in the current visual selection. Honestly
+												-- this is the only way of running commands in molten, is what I've 
+												-- been able to use so far without errors (didn't have time to debug other
+												-- ways of running cells in molten)
 	{ 
 		silent = true,
 		desc = "evaluate visual selection" 
