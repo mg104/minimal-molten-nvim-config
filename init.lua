@@ -5,6 +5,8 @@ require('config.lazy')
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
 
+-------------------- WINDOW SPLITS --------------------
+
 vim.g.netrw_browse_split = 2
 -- Automatically change the working directory to the current
 -- folder that is open in Netrw file explorer
@@ -19,6 +21,9 @@ vim.opt.hlsearch = true
 -- Ignore case while searching for keywords in a buffer
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
+
+-------------------- SPACES/TABS/ETC --------------------
+
 -- Setting <tab> to 3 spaces
 vim.opt.tabstop = 3
 -- Setting <shift> to 3 spaces
@@ -26,6 +31,8 @@ vim.opt.shiftwidth = 3
 -- Don't 'expand' the tab into spaces (tab won't expand into 3 spaces, it
 -- will remain as a single 'tab')
 vim.opt.expandtab = false
+
+-------------------- MOVEMENT --------------------
 
 -- Keymaps shortcuts for pressing Alt+<direction> instead of Ctrl + w + <direction>
 -- (less keys to press) to switch to window that is:
@@ -43,13 +50,16 @@ vim.api.nvim_set_keymap("n", "<M-l>", "<C-w>l", {noremap = true, silent = true})
 -- <Esc> key
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap = true, silent = true})
 
+-------------------- PACKAGE SPECIFIC SETTINGS --------------------
+
+-------------------- MOLTEN.NVIM --------------------
+
 -- Make nvim use the python virtual environment that Molten.nvim package advises to use
 -- This package will be used by nvim to do "python things". You can still create a separate 
 -- pip or mamba env for your project and the project will use that (not the nvim python env)
 vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 
 -- Keymap shortcuts for the plugin Molten.nvim
-
 vim.keymap.set(
 	"n",
 	"<localleader>mi",
