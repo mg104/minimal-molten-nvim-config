@@ -37,6 +37,15 @@ vim.opt.expandtab = false
 -- Keymaps shortcuts for pressing Alt+<direction> instead of Ctrl + w + <direction>
 -- (less keys to press) to switch to window that is:
 
+-- Command syntax:
+-- n: Run this command in vim's normal mode
+-- <M-x>: Alt + <x>: Resulting keymap
+-- <C-w>x: Ctrl + w + <x>: Current keymap which I want to change
+-- noremap = true: when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l
+-- 	i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
+-- 	happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
+-- 	taken into account
+
 -- Left
 vim.api.nvim_set_keymap("n", "<M-h>", "<C-w>h", {noremap = true, silent = true})
 -- Down
