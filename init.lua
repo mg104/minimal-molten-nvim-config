@@ -62,7 +62,8 @@ vim.api.nvim_set_keymap("n", "<M-l>", "<C-w>l", {noremap = true, silent = true})
 
 -- Use fastly-pressed 'j' key to act as <Esc> for less movement of fingers to the 
 -- <Esc> key
-vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("i", "ii", "<Esc>", {noremap = true, silent = true})
 
 -- Save all nvim buffers automatically after 30 seconds
 vim.fn.timer_start(
