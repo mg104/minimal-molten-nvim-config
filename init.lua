@@ -22,6 +22,11 @@ vim.opt.hlsearch = true
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
 
+-------------------- DISPLAYING INSIDE BUFFER --------------------
+
+-- Display line numbers on the left by default
+vim.opt.number = true
+
 -------------------- SPACES/TABS/ETC --------------------
 
 -- Setting <tab> to 3 spaces
@@ -59,7 +64,33 @@ vim.api.nvim_set_keymap("n", "<M-l>", "<C-w>l", {noremap = true, silent = true})
 -- <Esc> key
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap = true, silent = true})
 
--------------------- PACKAGE SPECIFIC SETTINGS --------------------
+-- Save all nvim buffers automatically after 30 seconds
+vim.fn.timer_start(
+	60000,
+	function()
+		vim.cmd('silent! wa')
+	end,
+	{['repeat'] = -1}
+)
+
+vim.g.molten_output_terminal = true  -- Sends output to a terminal buffer
+vim.g.molten_output_terminal_cmd = "new"  -- Opens it in a new buffer below
+
+---------------- MY CUSTOM Ex COMMANDS --------------
+
+-- Create command to open the terminal in a vertical split
+-- on the right side of the current buffer
+vim.api.nvim_create_user_command(
+	"RightTerm",
+	function()
+		vim.cmd("vertical rightbelow split")
+		vim.cmd("vertical resize 120%")
+		vim.cmd("terminal")
+	end,
+	{}
+)
+
+-------------- PACKAGE SPECIFIC SETTINGS ------------
 
 -------------------- MOLTEN.NVIM --------------------
 
@@ -128,6 +159,37 @@ vim.keymap.set(
 	":noautocmd MoltenEnterOutput<CR>"
 )
 
-vim.g.molten_output_terminal = true  -- Sends output to a terminal buffer
-vim.g.molten_output_terminal_cmd = "new"  -- Opens it in a new buffer below
+-------------- MY CUSTOM MOLTEN KEY MAPPINGS (SHORTCUTS) ------------
 
+-- Keymapping shortcut to use <localleader>oo (\oo) to run everything
+-- from the 1st line to the current line
+vim.keymap.set(
+	-- Keymapping runs in normal mode
+	"n",
+	-- \oo
+	"<localleader>oo",
+	-- ":<C-u>MoltenEvaluateVisual | normal! ''<CR>",
+	function()
+		-- Get the line number of the current line on which
+		-- the cursor is present currently
+		local cursor_pos = vim.api.nvim_win_get_cursor(0)
+		cursor_row, cursor_col = unpack(cursor_pos)
+		-- Visually select from 1st line to the current line
+		vim.cmd("normal! 1GV" .. cursor_row .. "G")
+		-- Get the last visual selection (i.e., the one highlighted above)
+		-- This is necessary as otherwise the nvim is deselcting the visual
+		-- selection selected in the normal mode in the command above
+		vim.cmd("normal! gv")
+		-- Run the current visual selection
+		vim.cmd("MoltenEvaluateVisual")
+		-- Move the cursor back to the original line
+		vim.cmd("normal! " .. cursor_row .. "G")
+		-- Center the current line to the middle of the nvim window
+		-- This is useful for looking at the output of the Molten cell being run
+		vim.cmd("normal! zz")
+	end,
+	{
+		silent = true,
+		desc = "test lua's ability to select line"
+	}
+)
