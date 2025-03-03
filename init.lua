@@ -5,6 +5,16 @@ require('config.lazy')
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
 
+-------------------- BASIC TOOLS FOR INTERACTING -------------------
+--------------------- WITH WINDOWS HOST (IN WSL) -------------------
+-- Tell nvim to use "unnamed plus" ("+) by default
+-- "+ is a register that is accessible to windows clipboards like
+-- win32yank.exe (I installed it and added it to wsl linux PATH variable, 
+-- so that linux can use it)
+-- This will copy the yanked (copied) text from nvim into the windows
+-- clipboard, and I can paste it outside nvim for later use
+vim.opt.clipboard:append("unnamedplus")
+
 -------------------- WINDOW SPLITS --------------------
 
 vim.g.netrw_browse_split = 2
@@ -63,7 +73,7 @@ vim.api.nvim_set_keymap("n", "<M-l>", "<C-w>l", {noremap = true, silent = true})
 -- Use fastly-pressed 'j' key to act as <Esc> for less movement of fingers to the 
 -- <Esc> key
 -- vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("i", "ii", "<Esc>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap = true, silent = true})
 
 -- Save all nvim buffers automatically after 30 seconds
 vim.fn.timer_start(
