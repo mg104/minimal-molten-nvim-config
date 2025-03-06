@@ -13,7 +13,7 @@ vim.cmd("syntax on")
 -- so that linux can use it)
 -- This will copy the yanked (copied) text from nvim into the windows
 -- clipboard, and I can paste it outside nvim for later use
-vim.opt.clipboard:append("unnamedplus")
+-- vim.opt.clipboard:append("unnamedplus")
 
 -------------------- WINDOW SPLITS --------------------
 
