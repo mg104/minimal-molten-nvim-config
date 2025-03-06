@@ -1,3 +1,11 @@
+-- PRO TIPS;
+
+-- 1. If a vim.cmd() works in nvim normatlly (":lua vim.cmd(...)") but 
+-- 	not inside init.lua file, try to run the vim.cmd in init.lua inside
+-- 	vim.defer_fn as there seems to be an issue with vim running init.lua commands
+-- 	"too early" (whatever that means - asked ChatGPT) leading to the command not
+-- 	working
+
 -- Initialize lazy package manager so that it can manage different nvim
 -- packages for this session
 require('config.lazy')
@@ -15,7 +23,7 @@ vim.cmd("syntax on")
 -- clipboard, and I can paste it outside nvim for later use
 -- vim.opt.clipboard:append("unnamedplus")
 
--------------------- WINDOW SPLITS --------------------
+-------------------- WINDOW SPLITS ---------------------------------
 
 vim.g.netrw_browse_split = 2
 -- Automatically change the working directory to the current
@@ -32,12 +40,12 @@ vim.opt.hlsearch = true
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
 
--------------------- DISPLAYING INSIDE BUFFER --------------------
+-------------------- DISPLAYING INSIDE BUFFER ----------------------
 
 -- Display line numbers on the left by default
 vim.opt.number = true
 
--------------------- SPACES/TABS/ETC --------------------
+-------------------- SPACES/TABS/ETC -------------------------------
 
 -- Setting <tab> to 3 spaces
 vim.opt.tabstop = 3
@@ -47,7 +55,7 @@ vim.opt.shiftwidth = 3
 -- will remain as a single 'tab')
 vim.opt.expandtab = false
 
--------------------- MOVEMENT --------------------
+-------------------- MOVEMENT --------------------------------------
 
 -- Keymaps shortcuts for pressing Alt+<direction> instead of Ctrl + w + <direction>
 -- (less keys to press) to switch to window that is:
@@ -87,7 +95,34 @@ vim.fn.timer_start(
 vim.g.molten_output_terminal = true  -- Sends output to a terminal buffer
 vim.g.molten_output_terminal_cmd = "new"  -- Opens it in a new buffer below
 
----------------- MY CUSTOM Ex COMMANDS --------------
+---------------- MY CUSTOM AUTOCOMMANDS -----------------------------
+-- Autocommands perform certain "Actions" automatically upon detecting
+-- happening of one or more "Triggering events"
+---------------------------------------------------------------------
+
+-- Create autocommand to un-highlight search results after I edit any 
+-- part of my file after searching for any string in the file
+-- Rationale: The search-string remains highlighted even after I've
+-- 	edited the file using it, but no longer need it. This ends up
+-- 	distracting me a lot
+vim.api.nvim_create_autocmd({"BufEnter", "TextChanged", "TextChangedI"}, -- any kind of file content change (editing/adding
+																								 -- text, triggers un-highlighting)
+	{
+	pattern = "*", -- Search clearning autocmd will work on all filetypes
+	callback = function() -- Function that runs upon file change
+		vim.defer_fn( -- Vim was running "nohlsearch" too soon
+			function()
+				-- vim.fn.setreg("/", "")
+				vim.cmd("nohlsearch") -- To clear the search highlights
+			end,
+			100 -- The function vim.cmd("nohlsearch") was running too soon and was not working. 100 ms delay 
+				 -- corrected this (I still need to understand this intricacy, but Protip 1. applies here)
+		)
+	end
+	}
+)
+
+---------------- MY CUSTOM Ex COMMANDS ------------------------------
 
 -- Create command to open the terminal in a vertical split
 -- on the right side of the current buffer
@@ -101,9 +136,9 @@ vim.api.nvim_create_user_command(
 	{}
 )
 
--------------- PACKAGE SPECIFIC SETTINGS ------------
+-------------- PACKAGE SPECIFIC SETTINGS ------------------------------
 
--------------------- MOLTEN.NVIM --------------------
+-------------------- MOLTEN.NVIM --------------------------------------
 
 -- Make nvim use the python virtual environment that Molten.nvim package advises to use
 -- This package will be used by nvim to do "python things". You can still create a separate 
@@ -170,7 +205,7 @@ vim.keymap.set(
 	":noautocmd MoltenEnterOutput<CR>"
 )
 
--------------- MY CUSTOM MOLTEN KEY MAPPINGS (SHORTCUTS) ------------
+-------------- MY CUSTOM MOLTEN KEY MAPPINGS (SHORTCUTS) -----------------
 
 -- Keymapping shortcut to use <localleader>oo (\oo) to run everything
 -- from the 1st line to the current line
