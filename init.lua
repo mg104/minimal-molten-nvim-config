@@ -1,10 +1,6 @@
 -- PRO TIPS;
 
--- 1. If a vim.cmd() works in nvim normatlly (":lua vim.cmd(...)") but 
--- 	not inside init.lua file, try to run the vim.cmd in init.lua inside
--- 	vim.defer_fn as there seems to be an issue with vim running init.lua commands
--- 	"too early" (whatever that means - asked ChatGPT) leading to the command not
--- 	working
+-- 1. If a vim.cmd() works in nvim normatlly (":lua vim.cmd(...)") but not inside init.lua file, try to run the vim.cmd in init.lua inside vim.defer_fn as there seems to be an issue with vim running init.lua commands "too early" (whatever that means - asked ChatGPT) leading to the command not working
 
 require('config.lazy')		-- Initialize lazy package manager so that it can manage different nvim packages for this session
 
