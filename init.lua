@@ -11,9 +11,8 @@ require('config.lazy')	-- Initialize lazy package manager so that it can manage 
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
 
--------------------- BASIC TOOLS FOR INTERACTING -------------------
------------------------- WITH SYSTEM CLIPBOARD ---------------------
------------------------- CURRENTLY NOT IN USE ----------------------
+-- BASIC TOOLS FOR INTERACTING WITH SYSTEM CLIPBOARD CURRENTLY NOT IN USE 
+
 -- Tell nvim to use "unnamed plus" ("+) by default
 -- "+ is a register that is accessible to windows clipboards like
 -- win32yank.exe (I installed it and added it to wsl linux PATH variable, 
@@ -22,10 +21,10 @@ vim.cmd("syntax on")
 -- clipboard, and I can paste it outside nvim for later use
 -- vim.opt.clipboard:append("unnamedplus")
 
--------------------- WINDOW SPLITS ---------------------------------
+-- WINDOW SPLITS 
 
 vim.g.netrw_keepdir = 0		-- Automatically change the working directory to the current folder 
-				 -- that is open in Netrw file explorer
+				-- that is open in Netrw file explorer
 vim.g.netrw_altv = 1		-- Open the code window on the right-hand-side in nvim
 vim.g.netrw_browse_split = 2
 vim.g.netrw_winsize = 80	-- Limit Netrw (Nvim's "file explorer") to 20% of the screen size
@@ -33,30 +32,29 @@ vim.opt.hlsearch = true		-- Highlight the searches for keywords in a buffer
 vim.opt.ignorecase = true	-- Ignore case while searching for keywords in a buffer
 vim.opt.incsearch = true
 
--------------------- DISPLAYING INSIDE BUFFER ----------------------
+-- DISPLAYING BUFFERS
 
 vim.opt.number = true		-- Display line numbers on the left by default
 
--------------------- SPACES/TABS/ETC -------------------------------
+-- WIDTH SETTINGS FOR SPACES/TABS/ETC 
 
 vim.opt.tabstop = 8 		-- Set <tab> to 8 spaces
 vim.opt.shiftwidth = 8 		-- Set <shift> to 8 spaces
 vim.opt.expandtab = false	-- Don't 'expand' the tab into spaces. With this setting, entering <tab>
-				 -- will not enter <tab>, but will enter <space> 8 times, instead
--------------------- MOVEMENT --------------------------------------
+				-- will not enter <tab>, but will enter <space> 8 times, instead
 
--- Create shortcuts for navigating amongst buffers by pressing Alt+<direction> 
+-- BUFFER NAVIGATION SHORTCUTS: Shortcuts for navigating amongst buffers by pressing Alt+<direction> 
 -- instead of the nvim default of pressing Ctrl + w + <direction> (1 key-press lesser)
 
-vim.api.nvim_set_keymap(	--Left
+vim.api.nvim_set_keymap(	-- Left
    "n", 			-- Run this command in vim's normal mode
    "<M-h>", 			-- Trigger it on pressing Alt + h
    "<C-w>h", 			-- Ctrl + w + h: Switch to the buffer on the left of current/active buffer
    {
       noremap = true,		-- when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l
-			      -- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
-			      -- happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
-			      -- taken into account
+				-- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
+			      	-- happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
+			      	-- taken into account
       silent = true
    }) 
 
@@ -88,13 +86,13 @@ vim.api.nvim_set_keymap(	-- Right
    })
 
 vim.api.nvim_set_keymap(	-- Use fastly-pressed 'j' key to act as <Esc> for less movement 
-				 -- of fingers to the <Esc> key
+				-- of fingers to the <Esc> key
    "i", 			-- Run this command in 'insert' mode
    "jj", 			-- Run it when I press 'j' twice fastly
    "<Esc>", 			-- Enter normal mode (same as pressing <Esc> in plain nvim)
    {
       noremap = true, 		-- No remapping of <Esc> (if I defined it anywhere), i.e.,
-				 -- <Esc> should work as it does in plain vim
+				-- <Esc> should work as it does in plain vim
       silent = true
    })
 
@@ -109,14 +107,12 @@ vim.fn.timer_start(		-- Save all nvim buffers automatically after 60 seconds
 vim.g.molten_output_terminal = true  		-- Sends output to a terminal buffer
 vim.g.molten_output_terminal_cmd = "new"  	-- Opens it in a new buffer below
 
------------------------ CUSTOM AUTOCOMMANDS -------------------------
--- Autocommands perform certain "Actions" automatically upon detecting
+-- CUSTOM AUTOCOMMANDS: Autocommands perform certain "Actions" automatically upon detecting
 -- happening of one or more "Triggering events"
----------------------------------------------------------------------
 
--- AUTOCOMMAND: Un-highlight search results after I edit any part of my file after searching for any string in the file
+-- Un-highlight search results after I edit any part of my file after searching for any string in the file
 -- RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. 
-   -- This ends up distracting me a lot
+-- This ends up distracting me a lot
 vim.api.nvim_create_autocmd(
    {	
       "BufEnter", 
@@ -130,15 +126,15 @@ vim.api.nvim_create_autocmd(
 	    function()
 	       vim.cmd("nohlsearch") 	-- To clear the search highlights
 	    end,			-- The function vim.cmd("nohlsearch") was running too soon and was not working. 
-					  -- 100 ms delay corrected this (I still need to understand this intricacy, 
-					  -- but Protip 1. applies here)
+					-- 100 ms delay corrected this (I still need to understand this intricacy, 
+					-- but Protip 1. applies here)
 	    100 		
 	 )
       end
    }
 )
 
----------------- MY CUSTOM Ex COMMANDS ------------------------------
+-- CUSTOM Ex COMMANDS 
 
 -- Open the terminal in a vertical split on the right side of the current buffer
 vim.api.nvim_create_user_command(
@@ -151,17 +147,14 @@ vim.api.nvim_create_user_command(
    {}
 )
 
--------------- PACKAGE SPECIFIC SETTINGS ------------------------------
+-- PACKAGE SPECIFIC SETTINGS 
 
--------------------- MOLTEN.NVIM --------------------------------------
-
--- Make nvim use the python virtual environment that Molten.nvim package advises to use
--- This package will be used by nvim to do "python things". You can still create a separate 
--- pip or mamba env for your project and the project will use that (not the nvim python env)
+-- MOLTEN: Make nvim use the python virtual environment that Molten.nvim package advises to use
+-- This package will be used by nvim to run python code that it uses internally for its own working. 
+-- You can still create a separate pip or mamba env for your project and the project will use that (not the nvim python env)
 vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 
--- Keymap shortcuts provided out of the box by Molten.nvim creator
-
+-- MOLTEN: Code execution shortcuts
 vim.keymap.set(
    "n",
    "<localleader>mi",
@@ -218,12 +211,10 @@ vim.keymap.set(
    ":noautocmd MoltenEnterOutput<CR>"
 )
 
--------------- MY CUSTOM MOLTEN KEY MAPPINGS (SHORTCUTS) -----------------
+-- CUSTOM MOLTEN SHORTCUTS
 
--- Keymapping shortcut to use <localleader>oo (\oo) to run everything
--- from the 1st line to the current line
+-- Use <localleader>oo (\oo) to run everything from the 1st line to the current line
 vim.keymap.set(
-
    "n",								-- Keymapping runs in normal mode
    "<localleader>oo",						-- Keypress: \oo
    function()
