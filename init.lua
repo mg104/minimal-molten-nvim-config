@@ -25,7 +25,7 @@ vim.cmd("syntax on")
 -------------------- WINDOW SPLITS ---------------------------------
 
 vim.g.netrw_keepdir = 0		-- Automatically change the working directory to the current folder 
-									-- that is open in Netrw file explorer
+-- that is open in Netrw file explorer
 vim.g.netrw_altv = 1			-- Open the code window on the right-hand-side in nvim
 vim.g.netrw_browse_split = 2
 vim.g.netrw_winsize = 80	-- Limit Netrw (Nvim's "file explorer") to 20% of the screen size
@@ -42,7 +42,7 @@ vim.opt.number = true		-- Display line numbers on the left by default
 vim.opt.tabstop = 3 			-- Set <tab> to 3 spaces
 vim.opt.shiftwidth = 3 		-- Set <shift> to 3 spaces
 vim.opt.expandtab = true	-- Don't 'expand' the tab into spaces (tab won't 'split' into spaces, 
-									-- it will remain as a single 'tab')
+-- it will remain as a single 'tab')
 
 -------------------- MOVEMENT --------------------------------------
 
