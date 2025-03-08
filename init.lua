@@ -6,25 +6,16 @@
 -- 	"too early" (whatever that means - asked ChatGPT) leading to the command not
 -- 	working
 
-require('config.lazy')	-- Initialize lazy package manager so that it can manage different nvim packages for this session
+require('config.lazy')		-- Initialize lazy package manager so that it can manage different nvim packages for this session
 
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
 
 -- BASIC TOOLS FOR INTERACTING WITH SYSTEM CLIPBOARD CURRENTLY NOT IN USE 
 
--- Tell nvim to use "unnamed plus" ("+) by default
--- "+ is a register that is accessible to windows clipboards like
--- win32yank.exe (I installed it and added it to wsl linux PATH variable, 
--- so that linux can use it)
--- This will copy the yanked (copied) text from nvim into the windows
--- clipboard, and I can paste it outside nvim for later use
--- vim.opt.clipboard:append("unnamedplus")
-
 -- WINDOW SPLITS 
 
-vim.g.netrw_keepdir = 0		-- Automatically change the working directory to the current folder 
-				-- that is open in Netrw file explorer
+vim.g.netrw_keepdir = 0		-- Automatically change the working directory to the current folder that is open in Netrw file explorer
 vim.g.netrw_altv = 1		-- Open the code window on the right-hand-side in nvim
 vim.g.netrw_browse_split = 2
 vim.g.netrw_winsize = 80	-- Limit Netrw (Nvim's "file explorer") to 20% of the screen size
@@ -50,10 +41,7 @@ vim.api.nvim_set_keymap(	-- Left
    "<M-h>", 			-- Trigger it on pressing Alt + h
    "<C-w>h", 			-- Ctrl + w + h: Switch to the buffer on the left of current/active buffer
    {
-      noremap = true,		-- when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l
-				-- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
-			      	-- happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
-			      	-- taken into account
+      noremap = true,		-- when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be taken into account
       silent = true
    }) 
 
@@ -107,8 +95,7 @@ vim.g.molten_output_terminal_cmd = "new"  	-- Opens it in a new buffer below
 
 -- CUSTOM AUTOCOMMANDS: Autocommands perform certain "Actions" automatically upon detecting happening of one or more "Triggering events"
 
--- Un-highlight search results after I edit any part of my file after searching for any string in the file RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. This ends up distracting me a lot
-vim.api.nvim_create_autocmd(
+vim.api.nvim_create_autocmd(		-- Un-highlight search results after I edit any part of my file after searching for any string in the file RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. This ends up distracting me a lot
    {	
       "BufEnter", 
       "TextChanged", 
@@ -129,8 +116,7 @@ vim.api.nvim_create_autocmd(
 
 -- CUSTOM Ex COMMANDS 
 
--- Open the terminal in a vertical split on the right side of the current buffer
-vim.api.nvim_create_user_command(
+vim.api.nvim_create_user_command(	-- Open the terminal in a vertical split on the right side of the current buffer
    "RightTerm",
    function()
       vim.cmd("vertical rightbelow split")
@@ -142,14 +128,14 @@ vim.api.nvim_create_user_command(
 
 -- PACKAGE SPECIFIC SETTINGS 
 
--- MOLTEN: Make nvim use the python virtual environment that Molten.nvim package advises to use This package will be used by nvim to run python code that it uses internally for its own working. You can still create a separate pip or mamba env for your project and the project will use that (not the nvim python env)
-vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
+-- MOLTEN
 
--- MOLTEN: Code execution shortcuts
-vim.keymap.set(
+vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3") -- Make nvim use the python virtual environment that Molten.nvim package advises to use This package will be used by nvim to run python code that it uses internally for its own working. You can still create a separate pip or mamba env for your project and the project will use that (not the nvim python env)
+
+vim.keymap.set(				-- Code execution shortcuts
    "n",
    "<localleader>mi",
-   ":MoltenInit<CR>", -- Initializes the pip/conda environment whose jupyter kernel you want to use
+   ":MoltenInit<CR>", 			-- Initializes the pip/conda environment whose jupyter kernel you want to use
    {
       silent = true, 
       desc = "Initialize the plugin" 
@@ -186,14 +172,15 @@ vim.keymap.set(
    }
 )
 
--- Run the code contained in the current visual selection, using Molten
-vim.keymap.set(
+
+vim.keymap.set(				-- Run the code contained in the current visual selection, using Molten
    "v",
    "<localleader>r",
-   ":<C-u>MoltenEvaluateVisual<CR>",	{ 
-      silent = true,
-      desc = "evaluate visual selection" 
-   }
+   ":<C-u>MoltenEvaluateVisual<CR>",	
+	{ 
+		silent = true,
+		desc = "evaluate visual selection" 
+	}
 )
 
 vim.keymap.set(
@@ -204,8 +191,7 @@ vim.keymap.set(
 
 -- CUSTOM MOLTEN SHORTCUTS
 
--- Use <localleader>oo (\oo) to run everything from the 1st line to the current line
-vim.keymap.set(
+vim.keymap.set(							-- Use <localleader>oo (\oo) to run everything from the 1st line to the current line
    "n",								-- Keymapping runs in normal mode
    "<localleader>oo",						-- Keypress: \oo
    function()
