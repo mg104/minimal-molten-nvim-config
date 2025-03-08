@@ -31,8 +31,7 @@ vim.opt.number = true		-- Display line numbers on the left by default
 
 vim.opt.tabstop = 8 		-- Set <tab> to 8 spaces
 vim.opt.shiftwidth = 8 		-- Set <shift> to 8 spaces
-vim.opt.expandtab = false	-- Don't 'expand' the tab into spaces. With this setting, entering <tab>
-				-- will not enter <tab>, but will enter <space> 8 times, instead
+vim.opt.expandtab = false	-- Don't 'expand' the tab into spaces. With this setting, entering <tab> will not enter <tab>, but will enter <space> 8 times, instead
 
 -- BUFFER NAVIGATION SHORTCUTS: Shortcuts for navigating amongst buffers by pressing Alt+<direction> instead of the nvim default of pressing Ctrl + w + <direction> (1 key-press lesser)
 
@@ -196,8 +195,8 @@ vim.keymap.set(							-- Use <localleader>oo (\oo) to run everything from the 1s
    "<localleader>oo",						-- Keypress: \oo
    function()
       local cursor_pos = vim.api.nvim_win_get_cursor(0)  	-- Get the line number of the current cursor position
-      cursor_row, cursor_col = unpack(cursor_pos) 		-- Visually select from 1st line to the current line
-      vim.cmd("normal! 1GV" .. cursor_row .. "G")
+      cursor_row, cursor_col = unpack(cursor_pos) 		
+      vim.cmd("normal! 1GV" .. cursor_row .. "G")		-- Visually select from 1st line to the current line
       vim.cmd("normal! gv")					-- Select the last visual selection (i.e., the one highlighted above) This is necessary as otherwise the nvim is deselcting the visual selection selected in the normal mode in the command above
       vim.cmd("MoltenEvaluateVisual")				-- Run the current visual selection	
       vim.cmd("normal! " .. cursor_row .. "G")			-- Move the cursor back to the original line
