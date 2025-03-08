@@ -55,9 +55,9 @@ vim.api.nvim_set_keymap(	--Left
 	"<C-w>h", 					-- Ctrl + w + h: Switch to the buffer on the left of current/active buffer
 	{
 		noremap = true, 		-- when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l
-									-- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
-									--	happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
-									--	taken into account
+		-- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
+		--	happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
+		--	taken into account
 		silent = true
 	}) 
 
@@ -89,13 +89,13 @@ vim.api.nvim_set_keymap(	-- Right
 	})
 
 vim.api.nvim_set_keymap(	-- Use fastly-pressed 'j' key to act as <Esc> for less movement 
-									-- of fingers to the <Esc> key
+	-- of fingers to the <Esc> key
 	"i", 							-- Run this command in 'insert' mode
 	"jj", 						-- Run it when I press 'j' twice fastly
 	"<Esc>", 					-- Enter normal mode (same as pressing <Esc> in plain nvim)
 	{
 		noremap = true, 		-- No remapping of <Esc> (if I defined it anywhere), i.e.,
-									-- 	<Esc> should work as it does in plain vim
+		-- 	<Esc> should work as it does in plain vim
 		silent = true
 	})
 
@@ -124,19 +124,19 @@ vim.api.nvim_create_autocmd(
 		"TextChanged", 
 		"TextChangedI"
 	}, 										-- any kind of file content change 
-												-- (editing/adding text, triggers un-highlighting)
+	-- (editing/adding text, triggers un-highlighting)
 	{
-	pattern = "*", 						-- Search clearning autocmd will work on all filetypes
-	callback = function() 				-- Function that runs upon file change
-		vim.defer_fn( 						-- Vim was running "nohlsearch" too soon
-			function()
-				vim.cmd("nohlsearch") 	-- To clear the search highlights
-			end,								-- The function vim.cmd("nohlsearch") was running too soon and was not working. 
-												-- 100 ms delay corrected this (I still need to understand this intricacy, 
-												-- but Protip 1. applies here)
-			100 		
-		)
-	end
+		pattern = "*", 						-- Search clearning autocmd will work on all filetypes
+		callback = function() 				-- Function that runs upon file change
+			vim.defer_fn( 						-- Vim was running "nohlsearch" too soon
+				function()
+					vim.cmd("nohlsearch") 	-- To clear the search highlights
+				end,								-- The function vim.cmd("nohlsearch") was running too soon and was not working. 
+				-- 100 ms delay corrected this (I still need to understand this intricacy, 
+				-- but Protip 1. applies here)
+				100 		
+			)
+		end
 	}
 )
 
@@ -224,7 +224,7 @@ vim.keymap.set(
 -- Keymapping shortcut to use <localleader>oo (\oo) to run everything
 -- from the 1st line to the current line
 vim.keymap.set(
-	
+
 	"n",																	-- Keymapping runs in normal mode
 	"<localleader>oo",												-- Keypress: \oo
 	function()
@@ -232,12 +232,12 @@ vim.keymap.set(
 		cursor_row, cursor_col = unpack(cursor_pos) 			-- Visually select from 1st line to the current line
 		vim.cmd("normal! 1GV" .. cursor_row .. "G")
 		vim.cmd("normal! gv")										-- Select the last visual selection (i.e., the one highlighted above)
-																			-- This is necessary as otherwise the nvim is deselcting the visual
-																			-- selection selected in the normal mode in the command above
+		-- This is necessary as otherwise the nvim is deselcting the visual
+		-- selection selected in the normal mode in the command above
 		vim.cmd("MoltenEvaluateVisual")							-- Run the current visual selection	
 		vim.cmd("normal! " .. cursor_row .. "G")				-- Move the cursor back to the original line
 		vim.cmd("normal! zz")										-- Center the current line to the middle of the nvim window, 
-																			-- to display the output properly
+		-- to display the output properly
 	end,
 	{
 		silent = true,
