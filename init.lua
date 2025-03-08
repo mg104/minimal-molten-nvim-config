@@ -43,8 +43,7 @@ vim.opt.shiftwidth = 8 		-- Set <shift> to 8 spaces
 vim.opt.expandtab = false	-- Don't 'expand' the tab into spaces. With this setting, entering <tab>
 				-- will not enter <tab>, but will enter <space> 8 times, instead
 
--- BUFFER NAVIGATION SHORTCUTS: Shortcuts for navigating amongst buffers by pressing Alt+<direction> 
--- instead of the nvim default of pressing Ctrl + w + <direction> (1 key-press lesser)
+-- BUFFER NAVIGATION SHORTCUTS: Shortcuts for navigating amongst buffers by pressing Alt+<direction> instead of the nvim default of pressing Ctrl + w + <direction> (1 key-press lesser)
 
 vim.api.nvim_set_keymap(	-- Left
    "n", 			-- Run this command in vim's normal mode
@@ -85,8 +84,7 @@ vim.api.nvim_set_keymap(	-- Right
       silent = true
    })
 
-vim.api.nvim_set_keymap(	-- Use fastly-pressed 'j' key to act as <Esc> for less movement 
-				-- of fingers to the <Esc> key
+vim.api.nvim_set_keymap(	-- Use fastly-pressed 'j' key to act as <Esc> for less movement of fingers to the <Esc> key
    "i", 			-- Run this command in 'insert' mode
    "jj", 			-- Run it when I press 'j' twice fastly
    "<Esc>", 			-- Enter normal mode (same as pressing <Esc> in plain nvim)
@@ -107,12 +105,9 @@ vim.fn.timer_start(		-- Save all nvim buffers automatically after 60 seconds
 vim.g.molten_output_terminal = true  		-- Sends output to a terminal buffer
 vim.g.molten_output_terminal_cmd = "new"  	-- Opens it in a new buffer below
 
--- CUSTOM AUTOCOMMANDS: Autocommands perform certain "Actions" automatically upon detecting
--- happening of one or more "Triggering events"
+-- CUSTOM AUTOCOMMANDS: Autocommands perform certain "Actions" automatically upon detecting happening of one or more "Triggering events"
 
--- Un-highlight search results after I edit any part of my file after searching for any string in the file
--- RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. 
--- This ends up distracting me a lot
+-- Un-highlight search results after I edit any part of my file after searching for any string in the file RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. This ends up distracting me a lot
 vim.api.nvim_create_autocmd(
    {	
       "BufEnter", 
@@ -125,9 +120,7 @@ vim.api.nvim_create_autocmd(
 	 vim.defer_fn( 			-- Vim was running "nohlsearch" too soon
 	    function()
 	       vim.cmd("nohlsearch") 	-- To clear the search highlights
-	    end,			-- The function vim.cmd("nohlsearch") was running too soon and was not working. 
-					-- 100 ms delay corrected this (I still need to understand this intricacy, 
-					-- but Protip 1. applies here)
+	    end,			-- The function vim.cmd("nohlsearch") was running too soon and was not working. 100 ms delay corrected this (I still need to understand this intricacy, but Protip 1. applies here)
 	    100 		
 	 )
       end
@@ -149,9 +142,7 @@ vim.api.nvim_create_user_command(
 
 -- PACKAGE SPECIFIC SETTINGS 
 
--- MOLTEN: Make nvim use the python virtual environment that Molten.nvim package advises to use
--- This package will be used by nvim to run python code that it uses internally for its own working. 
--- You can still create a separate pip or mamba env for your project and the project will use that (not the nvim python env)
+-- MOLTEN: Make nvim use the python virtual environment that Molten.nvim package advises to use This package will be used by nvim to run python code that it uses internally for its own working. You can still create a separate pip or mamba env for your project and the project will use that (not the nvim python env)
 vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 
 -- MOLTEN: Code execution shortcuts
@@ -221,13 +212,11 @@ vim.keymap.set(
       local cursor_pos = vim.api.nvim_win_get_cursor(0)  	-- Get the line number of the current cursor position
       cursor_row, cursor_col = unpack(cursor_pos) 		-- Visually select from 1st line to the current line
       vim.cmd("normal! 1GV" .. cursor_row .. "G")
-      vim.cmd("normal! gv")					-- Select the last visual selection (i.e., the one highlighted above)
-								  -- This is necessary as otherwise the nvim is deselcting the visual
-								  -- selection selected in the normal mode in the command above
+      vim.cmd("normal! gv")					-- Select the last visual selection (i.e., the one highlighted above) This is necessary as otherwise the nvim is deselcting the visual selection selected in the normal mode in the command above
       vim.cmd("MoltenEvaluateVisual")				-- Run the current visual selection	
       vim.cmd("normal! " .. cursor_row .. "G")			-- Move the cursor back to the original line
       vim.cmd("normal! zz")					-- Center the current line to the middle of the nvim window, 
-								  -- to display the output properly
+								-- to display the output properly
    end,
    {
       silent = true,
