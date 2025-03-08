@@ -41,7 +41,7 @@ vim.opt.number = true		-- Display line numbers on the left by default
 
 vim.opt.tabstop = 3 			-- Set <tab> to 3 spaces
 vim.opt.shiftwidth = 3 		-- Set <shift> to 3 spaces
-vim.opt.expandtab = false	-- Don't 'expand' the tab into spaces (tab won't 'split' into spaces, 
+vim.opt.expandtab = true	-- Don't 'expand' the tab into spaces (tab won't 'split' into spaces, 
 									-- it will remain as a single 'tab')
 
 -------------------- MOVEMENT --------------------------------------
