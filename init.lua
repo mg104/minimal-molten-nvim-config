@@ -25,8 +25,8 @@ vim.cmd("syntax on")
 -------------------- WINDOW SPLITS ---------------------------------
 
 vim.g.netrw_keepdir = 0		-- Automatically change the working directory to the current folder 
--- that is open in Netrw file explorer
-vim.g.netrw_altv = 1			-- Open the code window on the right-hand-side in nvim
+				 -- that is open in Netrw file explorer
+vim.g.netrw_altv = 1		-- Open the code window on the right-hand-side in nvim
 vim.g.netrw_browse_split = 2
 vim.g.netrw_winsize = 80	-- Limit Netrw (Nvim's "file explorer") to 20% of the screen size
 vim.opt.hlsearch = true		-- Highlight the searches for keywords in a buffer
@@ -39,8 +39,8 @@ vim.opt.number = true		-- Display line numbers on the left by default
 
 -------------------- SPACES/TABS/ETC -------------------------------
 
-vim.opt.tabstop = 3 			-- Set <tab> to 3 spaces
-vim.opt.shiftwidth = 3 		-- Set <shift> to 3 spaces
+vim.opt.tabstop = 8 		-- Set <tab> to 3 spaces
+vim.opt.shiftwidth = 8 		-- Set <shift> to 3 spaces
 vim.opt.expandtab = true	-- Don't 'expand' the tab into spaces (tab won't 'split' into spaces, 
 -- it will remain as a single 'tab')
 
@@ -50,61 +50,61 @@ vim.opt.expandtab = true	-- Don't 'expand' the tab into spaces (tab won't 'split
 -- instead of the nvim default of pressing Ctrl + w + <direction> (1 key-press lesser)
 
 vim.api.nvim_set_keymap(	--Left
-	"n", 							-- Run this command in vim's normal mode
-	"<M-h>", 					-- Trigger it on pressing Alt + h
-	"<C-w>h", 					-- Ctrl + w + h: Switch to the buffer on the left of current/active buffer
-	{
-		noremap = true, 		-- when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l
-		-- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
-		--	happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
-		--	taken into account
-		silent = true
-	}) 
+   "n", 			-- Run this command in vim's normal mode
+   "<M-h>", 			-- Trigger it on pressing Alt + h
+   "<C-w>h", 			-- Ctrl + w + h: Switch to the buffer on the left of current/active buffer
+   {
+      noremap = true, 		-- when I say <C-w>h/j/k/l, consider the original meaning of <C-w>h/j/k/l
+			      -- i.e., if you had remapped <C-w>h/j/k/l to some other keys also, the recursion won't 
+			      -- happen while interpreting <C-w>h/j/k/l and instead the 'original meaning' will be
+			      -- taken into account
+      silent = true
+   }) 
 
 vim.api.nvim_set_keymap(	-- Down
-	"n", 
-	"<M-j>", 
-	"<C-w>j", 
-	{
-		noremap = true, 
-		silent = true
-	}) 
+   "n", 
+   "<M-j>", 
+   "<C-w>j", 
+   {
+      noremap = true, 
+      silent = true
+   }) 
 
 vim.api.nvim_set_keymap(	-- Up
-	"n", 
-	"<M-k>", 
-	"<C-w>k", 
-	{
-		noremap = true, 
-		silent = true
-	})
+   "n", 
+   "<M-k>", 
+   "<C-w>k", 
+   {
+      noremap = true, 
+      silent = true
+   })
 
 vim.api.nvim_set_keymap(	-- Right
-	"n", 
-	"<M-l>", 
-	"<C-w>l", 
-	{
-		noremap = true, 
-		silent = true
-	})
+   "n", 
+   "<M-l>", 
+   "<C-w>l", 
+   {
+      noremap = true, 
+      silent = true
+   })
 
 vim.api.nvim_set_keymap(	-- Use fastly-pressed 'j' key to act as <Esc> for less movement 
-	-- of fingers to the <Esc> key
-	"i", 							-- Run this command in 'insert' mode
-	"jj", 						-- Run it when I press 'j' twice fastly
-	"<Esc>", 					-- Enter normal mode (same as pressing <Esc> in plain nvim)
-	{
-		noremap = true, 		-- No remapping of <Esc> (if I defined it anywhere), i.e.,
-		-- 	<Esc> should work as it does in plain vim
-		silent = true
-	})
+   -- of fingers to the <Esc> key
+   "i", 							-- Run this command in 'insert' mode
+   "jj", 						-- Run it when I press 'j' twice fastly
+   "<Esc>", 					-- Enter normal mode (same as pressing <Esc> in plain nvim)
+   {
+      noremap = true, 		-- No remapping of <Esc> (if I defined it anywhere), i.e.,
+      -- 	<Esc> should work as it does in plain vim
+      silent = true
+   })
 
 vim.fn.timer_start( 			-- Save all nvim buffers automatically after 30 seconds
-	60000,
-	function()
-		vim.cmd('silent! wa')
-	end,
-	{['repeat'] = -1}
+   60000,
+   function()
+      vim.cmd('silent! wa')
+   end,
+   {['repeat'] = -1}
 )
 
 vim.g.molten_output_terminal = true  		-- Sends output to a terminal buffer
@@ -119,38 +119,38 @@ vim.g.molten_output_terminal_cmd = "new"  -- Opens it in a new buffer below
 -- RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. 
 -- 				This ends up distracting me a lot
 vim.api.nvim_create_autocmd(
-	{	
-		"BufEnter", 
-		"TextChanged", 
-		"TextChangedI"
-	}, 										-- any kind of file content change 
-	-- (editing/adding text, triggers un-highlighting)
-	{
-		pattern = "*", 						-- Search clearning autocmd will work on all filetypes
-		callback = function() 				-- Function that runs upon file change
-			vim.defer_fn( 						-- Vim was running "nohlsearch" too soon
-				function()
-					vim.cmd("nohlsearch") 	-- To clear the search highlights
-				end,								-- The function vim.cmd("nohlsearch") was running too soon and was not working. 
-				-- 100 ms delay corrected this (I still need to understand this intricacy, 
-				-- but Protip 1. applies here)
-				100 		
-			)
-		end
-	}
+   {	
+      "BufEnter", 
+      "TextChanged", 
+      "TextChangedI"
+   }, 										-- any kind of file content change 
+   -- (editing/adding text, triggers un-highlighting)
+   {
+      pattern = "*", 						-- Search clearning autocmd will work on all filetypes
+      callback = function() 				-- Function that runs upon file change
+	 vim.defer_fn( 						-- Vim was running "nohlsearch" too soon
+	    function()
+	       vim.cmd("nohlsearch") 	-- To clear the search highlights
+	    end,								-- The function vim.cmd("nohlsearch") was running too soon and was not working. 
+	    -- 100 ms delay corrected this (I still need to understand this intricacy, 
+	    -- but Protip 1. applies here)
+	    100 		
+	 )
+      end
+   }
 )
 
 ---------------- MY CUSTOM Ex COMMANDS ------------------------------
 
 -- Open the terminal in a vertical split on the right side of the current buffer
 vim.api.nvim_create_user_command(
-	"RightTerm",
-	function()
-		vim.cmd("vertical rightbelow split")
-		vim.cmd("vertical resize 120%")
-		vim.cmd("terminal")
-	end,
-	{}
+   "RightTerm",
+   function()
+      vim.cmd("vertical rightbelow split")
+      vim.cmd("vertical resize 120%")
+      vim.cmd("terminal")
+   end,
+   {}
 )
 
 -------------- PACKAGE SPECIFIC SETTINGS ------------------------------
@@ -164,59 +164,59 @@ vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 
 -- Keymap shortcuts for the plugin Molten.nvim
 vim.keymap.set(
-	"n",
-	"<localleader>mi",
-	":MoltenInit<CR>", -- Initializes the pip/conda environment whose jupyter kernel you want to use
-	{
-		silent = true, 
-		desc = "Initialize the plugin" 
-	}
+   "n",
+   "<localleader>mi",
+   ":MoltenInit<CR>", -- Initializes the pip/conda environment whose jupyter kernel you want to use
+   {
+      silent = true, 
+      desc = "Initialize the plugin" 
+   }
 )
 
 vim.keymap.set(
-	"n",
-	"<localleader>e",
-	":MoltenEvaluateOperator<CR>",
-	{
-		silent = true, 
-		desc = "run operator selection" 
-	}
+   "n",
+   "<localleader>e",
+   ":MoltenEvaluateOperator<CR>",
+   {
+      silent = true, 
+      desc = "run operator selection" 
+   }
 )
 
 vim.keymap.set(
-	"n",
-	"<localleader>rl",
-	":MoltenEvaluateLine<CR>",
-	{
-		silent = true,
-		desc = "evaluate line" 
-	}
+   "n",
+   "<localleader>rl",
+   ":MoltenEvaluateLine<CR>",
+   {
+      silent = true,
+      desc = "evaluate line" 
+   }
 )
 
 vim.keymap.set(
-	"n",
-	"<localleader>rr",
-	":MoltenReevaluateCell<CR>",
-	{ 
-		silent = true,
-		desc = "re-evaluate cell" 
-	}
+   "n",
+   "<localleader>rr",
+   ":MoltenReevaluateCell<CR>",
+   { 
+      silent = true,
+      desc = "re-evaluate cell" 
+   }
 )
 
 -- Run the code contained in the current visual selection, using Molten
 vim.keymap.set(
-	"v",
-	"<localleader>r",
-	":<C-u>MoltenEvaluateVisual<CR>",	{ 
-		silent = true,
-		desc = "evaluate visual selection" 
-	}
+   "v",
+   "<localleader>r",
+   ":<C-u>MoltenEvaluateVisual<CR>",	{ 
+      silent = true,
+      desc = "evaluate visual selection" 
+   }
 )
 
 vim.keymap.set(
-	"n",
-	"<localleader>os",
-	":noautocmd MoltenEnterOutput<CR>"
+   "n",
+   "<localleader>os",
+   ":noautocmd MoltenEnterOutput<CR>"
 )
 
 -------------- MY CUSTOM MOLTEN KEY MAPPINGS (SHORTCUTS) -----------------
@@ -225,22 +225,22 @@ vim.keymap.set(
 -- from the 1st line to the current line
 vim.keymap.set(
 
-	"n",																	-- Keymapping runs in normal mode
-	"<localleader>oo",												-- Keypress: \oo
-	function()
-		local cursor_pos = vim.api.nvim_win_get_cursor(0)  -- Get the line number of the current cursor position
-		cursor_row, cursor_col = unpack(cursor_pos) 			-- Visually select from 1st line to the current line
-		vim.cmd("normal! 1GV" .. cursor_row .. "G")
-		vim.cmd("normal! gv")										-- Select the last visual selection (i.e., the one highlighted above)
-		-- This is necessary as otherwise the nvim is deselcting the visual
-		-- selection selected in the normal mode in the command above
-		vim.cmd("MoltenEvaluateVisual")							-- Run the current visual selection	
-		vim.cmd("normal! " .. cursor_row .. "G")				-- Move the cursor back to the original line
-		vim.cmd("normal! zz")										-- Center the current line to the middle of the nvim window, 
-		-- to display the output properly
-	end,
-	{
-		silent = true,
-		desc = "test lua's ability to select line"
-	}
+   "n",																	-- Keymapping runs in normal mode
+   "<localleader>oo",												-- Keypress: \oo
+   function()
+      local cursor_pos = vim.api.nvim_win_get_cursor(0)  -- Get the line number of the current cursor position
+      cursor_row, cursor_col = unpack(cursor_pos) 			-- Visually select from 1st line to the current line
+      vim.cmd("normal! 1GV" .. cursor_row .. "G")
+      vim.cmd("normal! gv")										-- Select the last visual selection (i.e., the one highlighted above)
+      -- This is necessary as otherwise the nvim is deselcting the visual
+      -- selection selected in the normal mode in the command above
+      vim.cmd("MoltenEvaluateVisual")							-- Run the current visual selection	
+      vim.cmd("normal! " .. cursor_row .. "G")				-- Move the cursor back to the original line
+      vim.cmd("normal! zz")										-- Center the current line to the middle of the nvim window, 
+      -- to display the output properly
+   end,
+   {
+      silent = true,
+      desc = "test lua's ability to select line"
+   }
 )
