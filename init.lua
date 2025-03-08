@@ -24,7 +24,7 @@ vim.opt.number = true   -- Display line numbers on the left by default
 
 -- WIDTH SETTINGS FOR SPACES/TABS/ETC 
 
-vim.opt.expandtab = true   -- Don't 'expand' the tab into spaces. With this setting, entering <tab> will not enter <tab>, but will enter <space> 8 times, instead
+vim.opt.expandtab = true   -- Don't 'expand' the tab into spaces. With this setting, entering <tab> will not enter <tab>, but will enter <space> 8 times, instead. Note that this needs to come before softtabstop, 
 vim.opt.softtabstop = 3    -- When pressing backspace, delete 3 spaces at once (by treating them as 1 tabspace; helpful in deleting tabs fastly)
 vim.opt.tabstop = 3        -- Set <tab> to 8 spaces
 vim.opt.shiftwidth = 3     -- Set <shift> to 8 spaces
