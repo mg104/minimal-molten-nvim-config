@@ -6,7 +6,42 @@ require('config.lazy')  -- Initialize lazy package manager so that it can manage
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
 
--- BASIC TOOLS FOR INTERACTING WITH SYSTEM CLIPBOARD CURRENTLY NOT IN USE 
+-- CLIPBOARD
+vim.g.clipboard = 'osc52'
+-- Copy visual selection to system clipboard, using default default "y" keystroke
+vim.api.nvim_set_keymap(
+   "v",
+   "y",
+   '"+y',
+   {
+      noremap = true,
+      silent = true,
+   }
+)
+-- Copy line to system clipboard, using default default "y" keystroke
+vim.api.nvim_set_keymap(
+   "n",
+   "yy",
+   '"+yy',
+   {
+      noremap = true,
+      silent = true,
+   }
+)
+
+-- OS SPECIFIC SETTINGS
+-- Use Windows powershell on windows
+if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+   vim.opt.shell = "pwsh"
+   vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+   vim.opt.shellquote = ''
+   vim.opt.shellxquote = ""
+end
+
+-- VIM RESPONSIVENESS
+
+vim.opt.timeoutlen = 300   -- Reducing the current time duration (1000 ms) taken by vim to register long-pressing of keys INSIDE INSERT MODE (like: pressing <j> in quick succession to enter <Esc>)
+vim.opt.ttimeoutlen = 5    -- Same as above, but works in normal mode (the original vim ttimeout was 50 ms)
 
 -- WINDOW SPLITS 
 
@@ -18,13 +53,12 @@ vim.opt.hlsearch = true       -- Highlight the searches for keywords in a buffer
 vim.opt.ignorecase = true     -- Ignore case while searching for keywords in a buffer
 vim.opt.incsearch = true
 
--- DISPLAYING BUFFERS
-
-vim.opt.number = true   -- Display line numbers on the left by default
+vim.opt.number = true         -- Display line numbers on the left by default
+vim.opt.relativenumber = true -- Make the line number = 0 where the cursor is, and number the rest of lines in the file from there on (0 -> current cursor position, 1 -> next line, and so on). This is helpful when I run a visual selection of python code, and an error showing line numbers RELATIVE to the starting of the chunk of code is shown (with the starting line being labeled as 1 in the error output). Doing this helps me see the corresponding line numbers in nvim buffer/editor as well
 
 -- WIDTH SETTINGS FOR SPACES/TABS/ETC 
 
-vim.opt.expandtab = true   -- Don't 'expand' the tab into spaces. With this setting, entering <tab> will not enter <tab>, but will enter <space> 8 times, instead. Note that this needs to come before softtabstop, 
+vim.opt.expandtab = true   -- Don't 'expand' the tab into spaces. With this setting, entering <tab> will not enter <tab>, but will enter <space> 8 times, instead. Note that this needs to come before softtabstop, tabstop, and shiftwidth, because it wasn't working otherwise
 vim.opt.softtabstop = 3    -- When pressing backspace, delete 3 spaces at once (by treating them as 1 tabspace; helpful in deleting tabs fastly)
 vim.opt.tabstop = 3        -- Set <tab> to 8 spaces
 vim.opt.shiftwidth = 3     -- Set <shift> to 8 spaces
@@ -86,7 +120,7 @@ vim.fn.timer_start(           -- Save all nvim buffers automatically after 60 se
 
 vim.g.molten_output_terminal = true       -- Sends output to a terminal buffer
 vim.g.molten_output_terminal_cmd = "new"  -- Opens it in a new buffer below
-
+vim.g.molten_image_provider = nil
 -- CUSTOM AUTOCOMMANDS: Autocommands perform certain "Actions" automatically upon detecting happening of one or more "Triggering events"
 
 vim.api.nvim_create_autocmd(           -- Un-highlight search results after I edit any part of my file after searching for any string in the file RATIONALE: The search-string remains highlighted even after I've edited the file using it, but no longer need it. This ends up distracting me a lot
@@ -124,7 +158,8 @@ vim.api.nvim_create_user_command(   -- Open the terminal in a vertical split on 
 
 -- MOLTEN
 
-vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3") -- Make nvim use the python virtual environment that Molten.nvim package advises to use This package will be used by nvim to run python code that it uses internally for its own working. You can still create a separate pip or mamba env for your project and the project will use that (not the nvim python env)
+-- vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/Scripts/python.exe") 
+vim.g.python3_host_prog = vim.fn.expand("/home/madhur/.virtualenvs/neovim/bin/python") 
 
 vim.keymap.set(                        -- Code execution shortcuts
    "n",
@@ -169,7 +204,7 @@ vim.keymap.set(
 
 vim.keymap.set(   -- Run the code contained in the current visual selection, using Molten
    "v",
-   "<localleader>r",
+   "rr",
    ":<C-u>MoltenEvaluateVisual<CR>",   
    { 
       silent = true,
@@ -179,7 +214,7 @@ vim.keymap.set(   -- Run the code contained in the current visual selection, usi
 
 vim.keymap.set(
    "n",
-   "<localleader>os",
+   "<leader>os",
    ":noautocmd MoltenEnterOutput<CR>"
 )
 
@@ -187,7 +222,7 @@ vim.keymap.set(
 
 vim.keymap.set(                                          -- Use <localleader>oo (\oo) to run everything from the 1st line to the current line
    "n",                                                  -- Keymapping runs in normal mode
-   "<localleader>oo",                                    -- Keypress: \oo
+   "<leader>ro",                                         -- Keypress: \oo
    function()
       local cursor_pos = vim.api.nvim_win_get_cursor(0)  -- Get the line number of the current cursor position
       cursor_row, cursor_col = unpack(cursor_pos)     
@@ -200,5 +235,19 @@ vim.keymap.set(                                          -- Use <localleader>oo 
    {
       silent = true,
       desc = "test lua's ability to select line"
+   }
+)
+
+-- MY CUSTOM LUA PLUGINS/SCRIPTS
+vim.keymap.set(                                          -- Shortcut to highlight strings in nvim buffer, using perl
+   "n",
+   "<localleader>w",
+   function()
+      local perl_regex = vim.fn.input("Enter search term: ")
+      require("hl").get_perl_regex_matches(perl_regex)
+   end,
+   {
+      noremap = true,
+      silent = true
    }
 )
