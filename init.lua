@@ -18,6 +18,7 @@ vim.api.nvim_set_keymap(
       silent = true,
    }
 )
+
 -- Copy line to system clipboard, using default default "y" keystroke
 vim.api.nvim_set_keymap(
    "n",
@@ -103,7 +104,7 @@ vim.api.nvim_set_keymap(   -- Right
 
 vim.api.nvim_set_keymap(   -- Use fastly-pressed 'j' key to act as <Esc> for less movement of fingers to the <Esc> key
    "i",                    -- Run this command in 'insert' mode
-   "jj",                   -- Run it when I press 'j' twice fastly
+   "nn",                   -- Run it when I press 'j' twice fastly
    "<Esc>",                -- Enter normal mode (same as pressing <Esc> in plain nvim)
    {
       noremap = true,      -- No remapping of <Esc> (if I defined it anywhere), i.e., <Esc> should work as it does in plain vim
@@ -196,7 +197,6 @@ vim.keymap.set(
    "<localleader>rr",
    ":MoltenReevaluateCell<CR>",
    { 
-      silent = true,
       desc = "re-evaluate cell" 
    }
 )
@@ -207,7 +207,6 @@ vim.keymap.set(   -- Run the code contained in the current visual selection, usi
    "rr",
    ":<C-u>MoltenEvaluateVisual<CR>",   
    { 
-      silent = true,
       desc = "evaluate visual selection" 
    }
 )
@@ -250,4 +249,82 @@ vim.keymap.set(                                          -- Shortcut to highligh
       noremap = true,
       silent = true
    }
+)
+
+vim.keymap.set(
+   "",
+   "n",
+   "j"
+)
+
+vim.keymap.set(
+   "",
+   "e",
+   "k"
+)
+
+vim.keymap.set(
+   "",
+   "i",
+   "l"
+)
+
+vim.keymap.set(
+   "",
+   "u",
+   "i"
+)
+
+vim.keymap.set(
+   "",
+   "z",
+   "b"
+)
+
+vim.keymap.set(
+   "n",
+   "y",
+   "o"
+)
+
+vim.keymap.set(
+   "",
+   "s",
+   "d"
+)
+
+vim.keymap.set(
+   "n",
+   "<C-s>",
+   "<C-d>"
+)
+
+vim.keymap.set(
+   "n",
+   "m",
+   "h"
+)
+
+vim.keymap.set(
+   "n",
+   "i",
+   "u"
+)
+
+vim.keymap.set(
+   "n",
+   "l",
+   "u"
+)
+
+vim.keymap.set(
+   "n",
+   "j",
+   "y"
+)
+
+vim.keymap.set(
+   "n",
+   "j",
+   "y"
 )

@@ -16,6 +16,7 @@ return {
 				"html",
 				"markdown",
 				"python",
+            "r",
 			},
 			sync_install = false,
 			highlight = { enable = true },
