@@ -307,8 +307,8 @@ vim.keymap.set(
 
 vim.keymap.set(
    "n",
-   "i",
-   "u"
+   "u",
+   "i"
 )
 
 vim.keymap.set(
@@ -330,6 +330,7 @@ vim.keymap.set(
 )
 
 vim.keymap.set(
-   "n",
+   {"n", "v"},
    "m",
    "h"
+)
