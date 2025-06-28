@@ -328,3 +328,8 @@ vim.keymap.set(
    "j",
    "y"
 )
+
+vim.keymap.set(
+   "n",
+   "m",
+   "h"
