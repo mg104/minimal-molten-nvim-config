@@ -213,7 +213,7 @@ vim.keymap.set(   -- Run the code contained in the current visual selection, usi
 
 vim.keymap.set(
    "n",
-   "<leader>os",
+   "<leader>re",
    ":noautocmd MoltenEnterOutput<CR>"
 )
 
@@ -252,85 +252,60 @@ vim.keymap.set(                                          -- Shortcut to highligh
 )
 
 vim.keymap.set(
-   "",
    "n",
-   "j"
+   "ss",
+   "dd"
 )
 
-vim.keymap.set(
-   "",
-   "e",
-   "k"
-)
+------------------------------------------------------------------
+-- Colemak-DHM → QWERTY remaps
+--   • normal + visual : plain keys
+--   • normal only     : Ctrl-key chords
+------------------------------------------------------------------
+local map  = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
-vim.keymap.set(
-   "",
-   "i",
-   "l"
-)
+-- { <your-layout key> = <QWERTY key> }
+local cmk2qwerty = {
+  -- right-hand home / motion keys
+  m = "h", n = "j", e = "k", i = "l",
+  -- remaining right-hand letters
+  o = ";", j = "y", l = "u", u = "i", y = "o",
+  -- left-hand home row shifts
+  r = "s", s = "d", t = "f", b = "t", f = "e", p = "r",
+  -- bottom row shifts
+  x = "z", c = "x", d = "c", z = "b",
+  k = "n", h = "m", [";"] = "p"
+}
 
-vim.keymap.set(
-   "",
-   "u",
-   "i"
-)
+local doubleTapKeyRemapping = {
+   ss = "dd",
+   jj = "yy"
+}
 
-vim.keymap.set(
-   "",
-   "z",
-   "b"
-)
+------------------------------------------------------------------
+-- 1.  Plain keys → QWERTY   (Normal + Visual)
+------------------------------------------------------------------
+for from, to in pairs(cmk2qwerty) do
+  -- lower-case
+  map({ "n", "v" }, from,           to,           opts)
+  -- upper-case (when result is a letter)
+  if to:match("%l") then
+    map({ "n", "v" }, from:upper(), to:upper(), opts)
+  end
+end
 
-vim.keymap.set(
-   "n",
-   "y",
-   "o"
-)
+------------------------------------------------------------------
+-- 2.  Ctrl-chords → QWERTY   (Normal only)
+------------------------------------------------------------------
+for from, to in pairs(cmk2qwerty) do
+  -- only map if both sides are letters (Ctrl-; isn’t portable)
+  if from:match("%a") and to:match("%a") then
+    map("n", "<C-"..from..">", "<C-"..to..">", opts)
+  end
+end
 
-vim.keymap.set(
-   "",
-   "s",
-   "d"
-)
+for from, to in pairs(doubleTapKeyRemapping) do
+    map("n", from, to, opts)
+end
 
-vim.keymap.set(
-   "n",
-   "<C-s>",
-   "<C-d>"
-)
-
-vim.keymap.set(
-   "n",
-   "m",
-   "h"
-)
-
-vim.keymap.set(
-   "n",
-   "u",
-   "i"
-)
-
-vim.keymap.set(
-   "n",
-   "l",
-   "u"
-)
-
-vim.keymap.set(
-   "n",
-   "j",
-   "y"
-)
-
-vim.keymap.set(
-   "n",
-   "j",
-   "y"
-)
-
-vim.keymap.set(
-   {"n", "v"},
-   "m",
-   "h"
-)
